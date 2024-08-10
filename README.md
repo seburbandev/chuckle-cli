@@ -1,5 +1,3 @@
-### README.md
-
 # chuckle-cli
 
 chuckle-cli is a simple command-line application that fetches and prints out a random joke. It utilises an API from [15DKatz/offcial_joke_api](https://github.com/15Dkatz/official_joke_api). You can install it on Windows, Mac or Linux and everytime you're in terminal, you can type `chuckle` and it will fetch and print a joke, so you can have a chuckle.
