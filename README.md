@@ -2,7 +2,7 @@
 
 # chuckle-cli
 
-`chuckle-cli` is a simple command-line application that fetches and displays a random joke. This README provides instructions for installing and using `chuckle-cli` on Windows and macOS/Unix systems.
+chuckle-cli is a simple command-line application that fetches and prints out a random joke. It utilises an API from [15DKatz/offcial_joke_api](https://github.com/15Dkatz/official_joke_api). You can install it on Windows, Mac or Linux and everytime you're in terminal, you can type `chuckle` and it will fetch and print a joke, so you can have a chuckle.
 
 ## Installation
 
@@ -16,11 +16,11 @@
 Open your terminal or command prompt and clone the repository using Git:
 
 ```sh
-git clone https://github.com/yourusername/chuckle-cli.git
+git clone https://github.com/seburbandev/chuckle-cli.git
 cd chuckle-cli
 ```
 
-### macOS/Unix Installation
+### Mac/Linux
 
 1. Open your terminal and navigate to the cloned repository directory if you haven't already done so:
 
@@ -31,10 +31,10 @@ cd chuckle-cli
 2. Run the setup script:
 
     ```sh
-    ./setup.sh
+    ./unix-setup.sh
     ```
 
-3. Restart your terminal to apply the changes.
+3. Restart your terminal to apply changes.
 
 ### Windows Installation
 
@@ -47,10 +47,10 @@ cd chuckle-cli
 2. Run the setup script:
 
     ```sh
-    .\setup.ps1
+    .\windows-setup.ps1
     ```
 
-3. Restart your terminal to apply the changes.
+3. Restart your terminal to apply changes.
 
 ## Usage
 
@@ -60,6 +60,18 @@ Once you have installed `chuckle-cli`, you can use the `chuckle` command to fetc
 chuckle
 ```
 
+You should see joke printed in a format like below:
+
+```
+Have you ever heard of a music group called Cellophane?
+...
+
+...
+
+...
+They mostly wrap.
+```
+
 ## Troubleshooting
 
 - If the `chuckle` command is not recognized after installation, ensure that the PATH has been updated correctly by checking your shell configuration file (e.g., `.zshrc`, `.bash_profile`) and verifying that the `chuckle-cli` directory is included in your PATH.
@@ -67,7 +79,7 @@ chuckle
 
 ## Contributing
 
-Contributions are welcome! Please open an issue or submit a pull request for any improvements or bug fixes.
+Contributions are welcome. Please open an issue or submit a pull request for any improvements or bug fixes.
 
 ## License
 
