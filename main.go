@@ -47,11 +47,13 @@ func getJoke() (Joke, string) {
 }
 
 func printJoke(joke Joke) {
-	fmt.Print(joke.Setup)
-	fmt.Print("\n...\n")
-	fmt.Print("\n...\n")
-	fmt.Print("\n...\n")
-	fmt.Print(joke.Punchline)
+	fmt.Println(joke.Setup)
+	fmt.Println("...")
+	fmt.Println("")
+	fmt.Println("...")
+	fmt.Println("")
+	fmt.Println("...")
+	fmt.Println(joke.Punchline)
 }
 
 func main() {
