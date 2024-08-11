@@ -2,6 +2,10 @@
 
 chuckle-cli is a command-line application that does only one thing: prints out a random joke. It utilises an API from [15DKatz/offcial_joke_api](https://github.com/15Dkatz/official_joke_api). You can install it on Windows, Mac or Linux. Once installed, everytime you're in terminal, you can type `chuckle` and it will print out a joke, so you can have a chuckle.
 
+> [!NOTE]
+> This app was created as a fun project to learn more about the Go programming language. I don't expect anyone to make real use of it nor do I plan to add many other features in the future.
+
+
 ## Installation
 
 ### Dependencies
