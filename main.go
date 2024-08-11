@@ -13,18 +13,37 @@ type Joke struct {
 	Id        int    `json:"id"`
 }
 
-func getJoke() Joke {
+func getJoke() (Joke, string) {
 	url := "https://official-joke-api.appspot.com/random_joke"
 
-	req, _ := http.Get(url)
+	req, err := http.Get(url)
 
-	body, _ := io.ReadAll(req.Body)
+	if err != nil {
+		errorMessage := fmt.Sprintf("Error occurred while sending the HTTP request: %v", err)
+		return Joke{}, errorMessage
+	}
+
+	if req.StatusCode != http.StatusOK {
+		errorMessage := fmt.Sprintf("Received non 200 status code: %v", req.Status)
+		return Joke{}, errorMessage
+	}
+
+	body, err := io.ReadAll(req.Body)
+	if err != nil {
+		errorMessage := fmt.Sprintf("Error occurred while reading the response body: %v", err)
+		return Joke{}, errorMessage
+	}
+
+	defer req.Body.Close()
 
 	joke := Joke{}
+	err = json.Unmarshal(body, &joke)
+	if err != nil {
+		errorMessage := fmt.Sprintf("Error occurred while parsing the JSON response: %v", err)
+		return Joke{}, errorMessage
+	}
 
-	json.Unmarshal(body, &joke)
-
-	return joke
+	return joke, ""
 }
 
 func printJoke(joke Joke) {
@@ -36,6 +55,12 @@ func printJoke(joke Joke) {
 }
 
 func main() {
-	joke := getJoke()
+	joke, errorMessage := getJoke()
+
+	if errorMessage != "" {
+		fmt.Println(errorMessage)
+		return
+	}
+
 	printJoke(joke)
 }
