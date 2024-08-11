@@ -73,6 +73,10 @@ Have you ever heard of a music group called Cellophane?
 They mostly wrap.
 ```
 
+## Preview
+
+![](./chuckle-cli.gif)
+
 ## Troubleshooting
 
 - If the `chuckle` command is not recognized after installation, ensure that the PATH has been updated correctly by checking your shell configuration file (e.g., `.zshrc`, `.bash_profile`) and verifying that the `chuckle-cli` directory is included in your PATH.
