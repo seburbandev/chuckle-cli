@@ -1,24 +1,23 @@
 # chuckle-cli
 
-chuckle-cli is a simple command-line application that fetches and prints out a random joke. It utilises an API from [15DKatz/offcial_joke_api](https://github.com/15Dkatz/official_joke_api). You can install it on Windows, Mac or Linux and everytime you're in terminal, you can type `chuckle` and it will fetch and print a joke, so you can have a chuckle.
+chuckle-cli is a command-line application that does only one thing: prints out a random joke. It utilises an API from [15DKatz/offcial_joke_api](https://github.com/15Dkatz/official_joke_api). You can install it on Windows, Mac or Linux. Once installed, everytime you're in terminal, you can type `chuckle` and it will print out a joke, so you can have a chuckle.
 
 ## Installation
 
-### Prerequisites
+### Dependencies
 
-- **Go**: Ensure you have Go installed on your system. You can download and install it from [https://golang.org/dl/](https://golang.org/dl/).
-- **Git**: Ensure you have Git installed to clone the repository. You can download and install it from [https://git-scm.com/downloads](https://git-scm.com/downloads).
+- **Go**: Make sure you have Go installed on your system. You can download and install it from [https://golang.org/dl/](https://golang.org/dl/).
+- **Git**: Make sure you have Git installed to clone the repository. You can download and install it from [https://git-scm.com/downloads](https://git-scm.com/downloads).
 
-### Clone the Repository
+### Clone the repository
 
 Open your terminal or command prompt and clone the repository using Git:
 
 ```sh
 git clone https://github.com/seburbandev/chuckle-cli.git
-cd chuckle-cli
 ```
 
-### Mac/Linux
+### Mac/Linux installation
 
 1. Open your terminal and navigate to the cloned repository directory if you haven't already done so:
 
@@ -34,9 +33,9 @@ cd chuckle-cli
 
 3. Restart your terminal to apply changes.
 
-### Windows Installation
+### Windows installation
 
-1. Open PowerShell with administrator rights and navigate to the cloned repository directory if you haven't already done so:
+1. Open command prompt or powershell with administrator rights and navigate to the cloned repository directory if you haven't already done so:
 
     ```sh
     cd chuckle-cli
