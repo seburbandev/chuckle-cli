@@ -19,7 +19,7 @@ func getJoke() (Joke, string) {
 	req, err := http.Get(url)
 
 	if err != nil {
-		errorMessage := fmt.Sprintf("Error occurred while sending the HTTP request: %v", err)
+		errorMessage := fmt.Sprintf("Error occurred while sending the HTTP request: %v", err.Error())
 		return Joke{}, errorMessage
 	}
 
@@ -30,7 +30,7 @@ func getJoke() (Joke, string) {
 
 	body, err := io.ReadAll(req.Body)
 	if err != nil {
-		errorMessage := fmt.Sprintf("Error occurred while reading the response body: %v", err)
+		errorMessage := fmt.Sprintf("Error occurred while reading the response body: %v", err.Error())
 		return Joke{}, errorMessage
 	}
 
@@ -39,7 +39,7 @@ func getJoke() (Joke, string) {
 	joke := Joke{}
 	err = json.Unmarshal(body, &joke)
 	if err != nil {
-		errorMessage := fmt.Sprintf("Error occurred while parsing the JSON response: %v", err)
+		errorMessage := fmt.Sprintf("Error occurred while parsing the JSON response: %v", err.Error())
 		return Joke{}, errorMessage
 	}
 
