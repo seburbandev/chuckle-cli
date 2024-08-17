@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"flag"
 	"fmt"
 	"io"
 	"net/http"
@@ -10,13 +11,20 @@ import (
 type Joke struct {
 	Setup     string `json:"setup"`
 	Punchline string `json:"punchline"`
+	Type      string `json:"type"`
 	Id        int    `json:"id"`
 }
 
-func getJoke() (Joke, string) {
-	url := "https://official-joke-api.appspot.com/random_joke"
+type ApiQuery struct {
+	Url       string
+	QueryType string
+	JokeType  string
+	JokeCount int
+}
 
-	req, err := http.Get(url)
+func getJoke(aq ApiQuery) (Joke, string) {
+
+	req, err := http.Get(aq.Url)
 
 	if err != nil {
 		errorMessage := fmt.Sprintf("Error occurred while sending the HTTP request: %v", err.Error())
@@ -36,12 +44,20 @@ func getJoke() (Joke, string) {
 
 	defer req.Body.Close()
 
-	joke := Joke{}
-	err = json.Unmarshal(body, &joke)
+	if len(body) == 0 || string(body) == "[]" {
+		errorMessage := fmt.Sprintf("Error: could not find joke of type '%v'", aq.JokeType)
+		return Joke{}, errorMessage
+	}
+
+	var joke Joke
+
+	var jokes []Joke
+	err = json.Unmarshal(body, &jokes)
 	if err != nil {
 		errorMessage := fmt.Sprintf("Error occurred while parsing the JSON response: %v", err.Error())
 		return Joke{}, errorMessage
 	}
+	joke = jokes[0]
 
 	return joke, ""
 }
@@ -56,8 +72,43 @@ func printJoke(joke Joke) {
 	fmt.Println(joke.Punchline)
 }
 
+func buildApiQuery(jokeType string, jokeCount int) ApiQuery {
+
+	queryType := "default"
+
+	if jokeType != "" {
+		queryType = "custom"
+	}
+
+	aq := ApiQuery{
+		QueryType: queryType,
+		JokeType:  jokeType,
+		JokeCount: jokeCount,
+	}
+
+	baseUrl := "https://official-joke-api.appspot.com"
+
+	if aq.QueryType == "default" {
+		baseUrl += fmt.Sprintf("/jokes/random/%v", aq.JokeCount)
+	} else {
+		baseUrl += fmt.Sprintf("/jokes/%v/random", aq.JokeType)
+	}
+
+	aq.Url = baseUrl
+
+	return aq
+}
+
 func main() {
-	joke, errorMessage := getJoke()
+
+	jokeType := flag.String("type", "", "Type of joke to fetch")
+	jokeCount := 1
+
+	flag.Parse()
+
+	apiQuery := buildApiQuery(*jokeType, jokeCount)
+
+	joke, errorMessage := getJoke(apiQuery)
 
 	if errorMessage != "" {
 		fmt.Println(errorMessage)
