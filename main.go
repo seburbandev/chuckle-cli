@@ -8,6 +8,25 @@ import (
 	"net/http"
 )
 
+func main() {
+
+	jokeType := flag.String("type", "", "Type of joke to fetch")
+	jokeCount := 1
+
+	flag.Parse()
+
+	apiQuery := buildApiQuery(*jokeType, jokeCount)
+
+	joke, errorMessage := getJoke(apiQuery)
+
+	if errorMessage != "" {
+		fmt.Println(errorMessage)
+		return
+	}
+
+	printJoke(joke)
+}
+
 type Joke struct {
 	Setup     string `json:"setup"`
 	Punchline string `json:"punchline"`
@@ -25,41 +44,39 @@ type ApiQuery struct {
 func getJoke(aq ApiQuery) (Joke, string) {
 
 	req, err := http.Get(aq.Url)
+	errorMessage := ""
 
 	if err != nil {
-		errorMessage := fmt.Sprintf("Error occurred while sending the HTTP request: %v", err.Error())
+		errorMessage = fmt.Sprintf("Error occurred while sending the HTTP request: %v", err.Error())
 		return Joke{}, errorMessage
 	}
 
 	if req.StatusCode != http.StatusOK {
-		errorMessage := fmt.Sprintf("Received non 200 status code: %v", req.Status)
+		errorMessage = fmt.Sprintf("Received non 200 status code: %v", req.Status)
 		return Joke{}, errorMessage
 	}
 
 	body, err := io.ReadAll(req.Body)
 	if err != nil {
-		errorMessage := fmt.Sprintf("Error occurred while reading the response body: %v", err.Error())
+		errorMessage = fmt.Sprintf("Error occurred while reading the response body: %v", err.Error())
 		return Joke{}, errorMessage
 	}
 
 	defer req.Body.Close()
 
 	if len(body) == 0 || string(body) == "[]" {
-		errorMessage := fmt.Sprintf("Error: could not find joke of type '%v'", aq.JokeType)
+		errorMessage = fmt.Sprintf("Error: could not find joke of type '%v'", aq.JokeType)
 		return Joke{}, errorMessage
 	}
-
-	var joke Joke
 
 	var jokes []Joke
 	err = json.Unmarshal(body, &jokes)
 	if err != nil {
-		errorMessage := fmt.Sprintf("Error occurred while parsing the JSON response: %v", err.Error())
+		errorMessage = fmt.Sprintf("Error occurred while parsing the JSON response: %v", err.Error())
 		return Joke{}, errorMessage
 	}
-	joke = jokes[0]
 
-	return joke, ""
+	return jokes[0], errorMessage
 }
 
 func printJoke(joke Joke) {
@@ -97,23 +114,4 @@ func buildApiQuery(jokeType string, jokeCount int) ApiQuery {
 	aq.Url = baseUrl
 
 	return aq
-}
-
-func main() {
-
-	jokeType := flag.String("type", "", "Type of joke to fetch")
-	jokeCount := 1
-
-	flag.Parse()
-
-	apiQuery := buildApiQuery(*jokeType, jokeCount)
-
-	joke, errorMessage := getJoke(apiQuery)
-
-	if errorMessage != "" {
-		fmt.Println(errorMessage)
-		return
-	}
-
-	printJoke(joke)
 }
