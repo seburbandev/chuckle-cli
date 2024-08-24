@@ -11,9 +11,25 @@ import (
 func main() {
 
 	jokeType := flag.String("type", "", "Type of joke to fetch")
+	jokeTypeList := flag.Bool("list-types", false, "List available joke types")
 	jokeCount := 1
 
 	flag.Parse()
+
+	if *jokeTypeList {
+		fmt.Println("Available joke types:")
+		jokeTypes, errorMessage := getJokeTypes()
+
+		if errorMessage != "" {
+			fmt.Println(errorMessage)
+			return
+		}
+
+		for _, jokeType := range jokeTypes {
+			fmt.Println(jokeType)
+		}
+		return
+	}
 
 	apiQuery := buildApiQuery(*jokeType, jokeCount)
 
@@ -39,6 +55,43 @@ type ApiQuery struct {
 	QueryType string
 	JokeType  string
 	JokeCount int
+}
+
+func getJokeTypes() ([]string, string) {
+
+	baseUrl := "https://official-joke-api.appspot.com"
+	errorMessage := ""
+
+	req, err := http.Get(baseUrl + "/types")
+
+	if err != nil {
+		errorMessage = fmt.Sprintf("Error occurred while sending the HTTP request: %v", err.Error())
+		return []string{}, errorMessage
+	}
+
+	if req.StatusCode != http.StatusOK {
+		errorMessage = fmt.Sprintf("Received non 200 status code: %v", req.Status)
+		return []string{}, errorMessage
+	}
+
+	body, err := io.ReadAll(req.Body)
+
+	if err != nil {
+		errorMessage = fmt.Sprintf("Error occurred while reading the response body: %v", err.Error())
+		return []string{}, errorMessage
+	}
+
+	defer req.Body.Close()
+
+	var jokeTypes []string
+	err = json.Unmarshal(body, &jokeTypes)
+
+	if err != nil {
+		errorMessage = fmt.Sprintf("Error occurred while parsing the JSON response: %v", err.Error())
+		return []string{}, errorMessage
+	}
+
+	return jokeTypes, errorMessage
 }
 
 func getJoke(aq ApiQuery) (Joke, string) {
